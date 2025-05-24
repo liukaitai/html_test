@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国家资助与防诈骗知识测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .options {
+            margin-left: 20px;
+        }
+
+        .option {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+
+        .option.selected {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .progress {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+
+        .result-container {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+
+        .pass {
+            color: #2ecc71;
+        }
+
+        .fail {
+            color: #e74c3c;
+        }
+
+        .start-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 30px;
+            font-size: 18px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>国家资助与防诈骗知识测试</h1>
+    <div class="intro">
+        <p>本测试包含15道关于国家资助政策和防诈骗知识的题目，答对9道即可通过。</p>
+        <p>请仔细阅读题目，选择最合适的答案。</p>
+    </div>
+
+    <button class="start-btn" onclick="startTest()">开始测试</button>
+
+    <div id="quiz-container" style="display:none;">
+        <div class="progress">题目 <span id="current-question">1</span>/15</div>
+
+        <div id="question-1" class="question-container active">
+            <div class="question">1. 国家资助主要面向哪些人群?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 所有在校学生</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 家庭经济困难学生、特殊困难群体等</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 仅限农村户籍学生</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 仅限少数民族学生</div>
+            </div>
+        </div>
+
+        <div id="question-2" class="question-container">
+            <div class="question">2. 生源地信用助学贷款的申请条件有哪些？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 只需提供身份证</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 有国籍、成绩良好、户籍要求、家庭困难等条件</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 无需任何条件，所有学生均可申请</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 仅限研究生申请</div>
+            </div>
+        </div>
+
+        <div id="question-3" class="question-container">
+            <div class="question">3. 申请国家助学金需要准备什么材料？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 只需学生证</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 家庭经济困难证明、身份证、学生证等</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 银行存款证明</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 不需要任何材料</div>
+            </div>
+        </div>
+
+        <div id="question-4" class="question-container">
+            <div class="question">4. 国家励志奖学金的评审标准是什么？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 仅看学习成绩</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 二年级以上，品德好、成绩优、家庭困难等</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 仅限体育特长生</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 随机抽取</div>
+            </div>
+        </div>
+
+        <div id="question-5" class="question-container">
+            <div class="question">5. 高校学生服兵役国家教育资助的学费补偿标准是多少？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 本专科生每年最高8000元，研究生10000元</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 本专科生每年最高16000元，研究生20000元</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 统一每年5000元</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 不设上限，全额补偿</div>
+            </div>
+        </div>
+
+        <div id="question-6" class="question-container">
+            <div class="question">6. 电信网络诈骗的常见手段有哪些？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 冒充公检法、刷单、贷款等诈骗手段</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 只有电话诈骗</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 仅限网络购物诈骗</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 没有固定手段</div>
+            </div>
+        </div>
+
+        <div id="question-7" class="question-container">
+            <div class="question">7. 如何保护个人金融信息，防止被诈骗利用？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 随意透露个人信息</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 不透露信息、不点不明链接、定期查账户</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 将所有密码设为相同</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 不需要特别保护</div>
+            </div>
+        </div>
+
+        <div id="question-8" class="question-container">
+            <div class="question">8. 如果接到自称是资助机构的电话，要求转账验证身份，应该怎么做？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 立即转账</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 挂断电话，向学校或资助机构核实</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 提供银行卡信息</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 按对方要求操作</div>
+            </div>
+        </div>
+
+        <div id="question-9" class="question-container">
+            <div class="question">9. 国家反电信诈骗专用电话是什么？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 110</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 120</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 96110</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 12315</div>
+            </div>
+        </div>
+
+        <div id="question-10" class="question-container">
+            <div class="question">10. 发现疑似金融诈骗行为，应该向哪些部门举报？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 只向学校报告</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 公安机关、国家反诈中心、金融监管部门</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 不需要举报</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 只在社交媒体上发布</div>
+            </div>
+        </div>
+
+        <div id="question-11" class="question-container">
+            <div class="question">11. 校园贷有哪些危害？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 背负债务、影响信用、遭遇暴力催收等</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 没有任何危害</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 只影响个人信用</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 是解决经济困难的好方法</div>
+            </div>
+        </div>
+
+        <div id="question-12" class="question-container">
+            <div class="question">12. 遇到网络兼职诈骗，如何避免自己陷入骗局？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 不信高报酬信息、核实平台真实性、不缴费等</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 相信所有高薪兼职</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 先交押金试试</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 不需要特别防范</div>
+            </div>
+        </div>
+
+        <div id="question-13" class="question-container">
+            <div class="question">13. 精准资助包含哪些方面的内容？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 仅提供资金支持</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 精准识别对象、确定标准、选择方式、落实资金</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 只针对学习成绩好的学生</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 没有具体内容</div>
+            </div>
+        </div>
+
+        <div id="question-14" class="question-container">
+            <div class="question">14. 申请国家助学贷款的流程是怎样的？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 网上申请、准备材料、现场办理、学校审核</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 只需在学校填表</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 直接去银行办理</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 没有固定流程</div>
+            </div>
+        </div>
+
+        <div id="question-15" class="question-container">
+            <div class="question">15. 当收到中奖信息，要求先缴纳手续费才能领取奖金时，正确的做法是什么？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'a')">A. 立即转账支付手续费</div>
+                <div class="option" onclick="selectOption(this, 'b')">B. 不理会，删除信息，避免上当</div>
+                <div class="option" onclick="selectOption(this, 'c')">C. 联系对方询问详情</div>
+                <div class="option" onclick="selectOption(this, 'd')">D. 转发给朋友一起参与</div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button id="prev-btn" onclick="prevQuestion()" disabled>上一题</button>
+            <button id="next-btn" onclick="nextQuestion()">下一题</button>
+            <button id="submit-btn" onclick="submitTest()" style="display:none;">提交答案</button>
+        </div>
+    </div>
+
+    <div id="result-container" class="result-container">
+        <h2>测试结果</h2>
+        <div class="score">您的得分: <span id="score">0</span>/15</div>
+        <div id="pass-fail"></div>
+        <button onclick="restartTest()">重新测试</button>
+    </div>
+
+    <script>
+        // 正确答案
+        const correctAnswers = {
+            1: 'b',
+            2: 'b',
+            3: 'b',
+            4: 'b',
+            5: 'b',
+            6: 'a',
+            7: 'b',
+            8: 'b',
+            9: 'c',
+            10: 'b',
+            11: 'a',
+            12: 'a',
+            13: 'b',
+            14: 'a',
+            15: 'b'
+        };
+
+        let currentQuestion = 1;
+        const totalQuestions = 15;
+        let userAnswers = {};
+
+        function startTest() {
+            document.querySelector('.start-btn').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            updateProgress();
+        }
+
+        function selectOption(optionElement, optionValue) {
+            // 移除同一问题中其他选项的选中状态
+            const options = optionElement.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+
+            // 添加选中状态
+            optionElement.classList.add('selected');
+
+            // 保存用户答案
+            userAnswers[currentQuestion] = optionValue;
+
+            // 检查是否所有问题都已回答
+            checkAllAnswered();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+                currentQuestion++;
+                document.getElementById(`question-${currentQuestion}`).classList.add('active');
+                updateProgress();
+                updateNavigationButtons();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+                currentQuestion--;
+                document.getElementById(`question-${currentQuestion}`).classList.add('active');
+                updateProgress();
+                updateNavigationButtons();
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('current-question').textContent = currentQuestion;
+        }
+
+        function updateNavigationButtons() {
+            document.getElementById('prev-btn').disabled = currentQuestion === 1;
+            document.getElementById('next-btn').disabled = currentQuestion === totalQuestions;
+
+            if (currentQuestion === totalQuestions) {
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('submit-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('next-btn').style.display = 'inline-block';
+                document.getElementById('submit-btn').style.display = 'none';
+            }
+        }
+
+        function checkAllAnswered() {
+            let allAnswered = true;
+            for (let i = 1; i <= totalQuestions; i++) {
+                if (!userAnswers[i]) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+
+            if (allAnswered) {
+                document.getElementById('submit-btn').disabled = false;
+            }
+        }
+
+        function submitTest() {
+            let score = 0;
+            for (let i = 1; i <= totalQuestions; i++) {
+                if (userAnswers[i] === correctAnswers[i]) {
+                    score++;
+                }
+            }
+
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('result-container').style.display = 'block';
+            document.getElementById('score').textContent = score;
+
+            const passFailElement = document.getElementById('pass-fail');
+            if (score >= 9) {
+                passFailElement.textContent = "恭喜您通过了测试！";
+                passFailElement.className = "pass";
+            } else {
+                passFailElement.textContent = "很遗憾，您未达到及格标准（需答对9题）。";
+                passFailElement.className = "fail";
+            }
+        }
+
+        function restartTest() {
+            currentQuestion = 1;
+            userAnswers = {};
+
+            // 重置所有选项的选中状态
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // 显示第一题
+            document.querySelectorAll('.question-container').forEach(q => {
+                q.classList.remove('active');
+            });
+            document.getElementById('question-1').classList.add('active');
+
+            // 重置导航按钮
+            updateNavigationButtons();
+            updateProgress();
+
+            // 隐藏结果，显示测试
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            document.querySelector('.start-btn').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
